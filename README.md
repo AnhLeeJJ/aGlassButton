@@ -1,4 +1,4 @@
-# aGlassButton - Glass look and button view modifiers for SwiftUI
+# aGlassButton - Button and Glass look view modifiers for SwiftUI
 ![alt text](https://github.com/AnhLeeJJ/aGlassButton/blob/main/show.gif?raw=true)
 
 A simple yet strong swiftui ios glass and glass button view modifiers. Just drop GlassButton.swift to your project.
@@ -33,7 +33,30 @@ func glassButton(
 ```
 
 ```swift
-func glassTwoSideButton(
+func glassSideButton(
+  vertical: Bool = false,
+  downAction1: VoidAction? = nil,
+  downContAction1: VoidAction? = nil,
+  upAction1: VoidAction? = nil,
+  downAction2: VoidAction? = nil,
+  downContAction2: VoidAction? = nil,
+  upAction2: VoidAction? = nil
+)
+```
+
+And modifiers for button without the glass effect.
+
+```swift
+func touchButton(
+  downAction: VoidAction? = nil,
+  downContAction: VoidAction? = nil,
+  upAction: VoidAction? = nil
+)
+```
+
+```swift
+func sideTouchButton(
+  vertical: Bool = false,
   downAction1: VoidAction? = nil,
   downContAction1: VoidAction? = nil,
   upAction1: VoidAction? = nil,
