@@ -28,9 +28,9 @@ struct GlassLook: ViewModifier {
     }
 }
 
-// MARK: - Glass Button
+// MARK: - Touch Button
 
-struct GlassButton: ViewModifier {
+struct TouchButton: ViewModifier {
     @State private var touched: Bool = false
     var touchDownAction: VoidAction? = nil
     var touchDownContinuousAction: VoidAction? = nil
@@ -38,7 +38,6 @@ struct GlassButton: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .glass()
             .onTouchOverlay(perform: { state, _, _ in
                 withAnimation(.easeInOut(duration: 0.1)) {
                     if state == .firstStarted {
@@ -68,11 +67,12 @@ struct GlassButton: ViewModifier {
     }
 }
 
-// MARK: - Glass Two Sided Buttons
+// MARK: - Two Sided Buttons
 
-struct GlassTwoButtons: ViewModifier {
+struct SideTouchButtons: ViewModifier {
     @State private var touched1: Bool = false
     @State private var touched2: Bool = false
+    var isVertical: Bool = false
     var touchDownAction1: VoidAction? = nil
     var touchDownContinuousAction1: VoidAction? = nil
     var touchUpAction1: VoidAction? = nil
@@ -82,7 +82,6 @@ struct GlassTwoButtons: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .glass()
             .background(
                 Group {
                     if touched1 || touched2 {
@@ -98,40 +97,69 @@ struct GlassTwoButtons: ViewModifier {
                 }
             )
             .rotation3DEffect(
-                .degrees(touched1 ? -6 : touched2 ? 6 : 0), axis: (x: 0.0, y: 1.0, z: 0.0)
+                .degrees(touched1 ? -6 : touched2 ? 6 : 0), axis: (x: isVertical ? -1.0 : 0.0, y: isVertical ? 0.0 : 1.0, z: 0.0)
             )
             .scaleEffect(x: (touched1 || touched2) ? 0.96 : 1.0, y: (touched1 || touched2) ? 0.96 : 1.0)
             .shadow(color:.black.opacity(0.5), radius: 5, y: 5)
             .animation(.easeInOut(duration: 0.1), value: touched1)
             .animation(.easeInOut(duration: 0.1), value: touched2)
-            .overlay(
-                HStack(spacing: 0) {
-                    Rectangle()
-                        .fill(.clear)
-                        .onTouchOverlay(perform: { state, _, _ in
-                            if state == .firstStarted {
-                                touched1 = true
-                                touchDownAction1?()
-                            }
-                            if state == .lastEnded {
-                                touched1 = false
-                                touchUpAction1?()
-                            }
-                        })
-                    Rectangle()
-                        .fill(.clear)
-                        .onTouchOverlay(perform: { state, _, _ in
-                            if state == .firstStarted {
-                                touched2 = true
-                                touchDownAction2?()
-                            }
-                            if state == .lastEnded {
-                                touched2 = false
-                                touchUpAction2?()
-                            }
-                        })
+            .overlay {
+                if isVertical {
+                    VStack(spacing: 0) {
+                        Rectangle()
+                            .fill(.clear)
+                            .onTouchOverlay(perform: { state, _, _ in
+                                if state == .firstStarted {
+                                    touched1 = true
+                                    touchDownAction1?()
+                                }
+                                if state == .lastEnded {
+                                    touched1 = false
+                                    touchUpAction1?()
+                                }
+                            })
+                        Rectangle()
+                            .fill(.clear)
+                            .onTouchOverlay(perform: { state, _, _ in
+                                if state == .firstStarted {
+                                    touched2 = true
+                                    touchDownAction2?()
+                                }
+                                if state == .lastEnded {
+                                    touched2 = false
+                                    touchUpAction2?()
+                                }
+                            })
+                    }
+                } else {
+                    HStack(spacing: 0) {
+                        Rectangle()
+                            .fill(.clear)
+                            .onTouchOverlay(perform: { state, _, _ in
+                                if state == .firstStarted {
+                                    touched1 = true
+                                    touchDownAction1?()
+                                }
+                                if state == .lastEnded {
+                                    touched1 = false
+                                    touchUpAction1?()
+                                }
+                            })
+                        Rectangle()
+                            .fill(.clear)
+                            .onTouchOverlay(perform: { state, _, _ in
+                                if state == .firstStarted {
+                                    touched2 = true
+                                    touchDownAction2?()
+                                }
+                                if state == .lastEnded {
+                                    touched2 = false
+                                    touchUpAction2?()
+                                }
+                            })
+                    }
                 }
-            )
+            }
     }
 }
 
@@ -144,12 +172,24 @@ extension View {
         modifier(GlassLook(cornerSize: corner))
     }
     
+    func touchButton(downAction: VoidAction? = nil, downContAction: VoidAction? = nil, upAction: VoidAction? = nil) -> some View {
+        modifier(TouchButton(touchDownAction: downAction, touchDownContinuousAction: downContAction , touchUpAction: upAction))
+    }
+    
+    func sideTouchButton(vertical: Bool = false, downAction1: VoidAction? = nil, downContAction1: VoidAction? = nil, upAction1: VoidAction? = nil, downAction2: VoidAction? = nil, downContAction2: VoidAction? = nil, upAction2: VoidAction? = nil) -> some View {
+        modifier(SideTouchButtons(isVertical: vertical, touchDownAction1: downAction1, touchDownContinuousAction1: downContAction1 , touchUpAction1: upAction1, touchDownAction2: downAction2, touchDownContinuousAction2: downContAction2 , touchUpAction2: upAction2))
+    }
+    
     func glassButton(downAction: VoidAction? = nil, downContAction: VoidAction? = nil, upAction: VoidAction? = nil) -> some View {
-        modifier(GlassButton(touchDownAction: downAction, touchDownContinuousAction: downContAction , touchUpAction: upAction))
+        self
+            .glass()
+            .modifier(TouchButton(touchDownAction: downAction, touchDownContinuousAction: downContAction , touchUpAction: upAction))
     }
 
-    func glassTwoSideButton(downAction1: VoidAction? = nil, downContAction1: VoidAction? = nil, upAction1: VoidAction? = nil, downAction2: VoidAction? = nil, downContAction2: VoidAction? = nil, upAction2: VoidAction? = nil) -> some View {
-        modifier(GlassTwoButtons(touchDownAction1: downAction1, touchDownContinuousAction1: downContAction1 , touchUpAction1: upAction1, touchDownAction2: downAction2, touchDownContinuousAction2: downContAction2 , touchUpAction2: upAction2))
+    func glassSideButton(vertical: Bool = false, downAction1: VoidAction? = nil, downContAction1: VoidAction? = nil, upAction1: VoidAction? = nil, downAction2: VoidAction? = nil, downContAction2: VoidAction? = nil, upAction2: VoidAction? = nil) -> some View {
+        self
+            .glass()
+            .modifier(SideTouchButtons(isVertical: vertical, touchDownAction1: downAction1, touchDownContinuousAction1: downContAction1 , touchUpAction1: upAction1, touchDownAction2: downAction2, touchDownContinuousAction2: downContAction2 , touchUpAction2: upAction2))
     }
 }
 

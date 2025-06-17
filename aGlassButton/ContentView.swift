@@ -80,48 +80,96 @@ struct ContentView: View {
                     upAction: {print("UP")}
                 )
                 .colorScheme(.light)
-                
+
                 HStack {
-                    Text("🍏")
-                    Rectangle()
-                        .frame(width: 4, height: 24)
-                        .cornerRadius(2)
-                    Text("🍎")
+                    VStack {
+                        HStack {
+                            Text("🍏")
+                            Rectangle()
+                                .frame(width: 4, height: 24)
+                                .cornerRadius(2)
+                            Text("🍎")
+                        }
+                        .font(.system(size: 24, weight: .bold))
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 8)
+                        .containerShape(Rectangle())
+                        .glassSideButton(
+                            downAction1: {print("🍏 DOWN")},
+                            downContAction1: {print("🍏 DOWN CONTINUE")},
+                            upAction1: {print("🍏 UP")},
+                            downAction2: {print("🍎 DOWN")},
+                            downContAction2: {print("🍎 DOWN CONTINUE")},
+                            upAction2: {print("🍎 UP")}
+                        )
+                        .colorScheme(.dark)
+                        
+                        HStack {
+                            Text("🍏")
+                            Rectangle()
+                                .frame(width: 4, height: 24)
+                                .cornerRadius(2)
+                            Text("🍎")
+                        }
+                        .font(.system(size: 24, weight: .bold))
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 8)
+                        .containerShape(Rectangle())
+                        .glassSideButton(
+                            downAction1: {print("🍏 DOWN")},
+                            downContAction1: {print("🍏 DOWN CONTINUE")},
+                            upAction1: {print("🍏 UP")},
+                            downAction2: {print("🍎 DOWN")},
+                            downContAction2: {print("🍎 DOWN CONTINUE")},
+                            upAction2: {print("🍎 UP")}
+                        )
+                        .colorScheme(.light)
+                    }
+                    
+                    VStack {
+                        Text("🍏")
+                        Rectangle()
+                            .frame(width: 24, height: 4)
+                            .cornerRadius(2)
+                        Text("🍎")
+                    }
+                    .font(.system(size: 24, weight: .bold))
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 8)
+                    .containerShape(Rectangle())
+                    .glassSideButton(
+                        vertical: true,
+                        downAction1: {print("🍏 DOWN")},
+                        downContAction1: {print("🍏 DOWN CONTINUE")},
+                        upAction1: {print("🍏 UP")},
+                        downAction2: {print("🍎 DOWN")},
+                        downContAction2: {print("🍎 DOWN CONTINUE")},
+                        upAction2: {print("🍎 UP")}
+                    )
+                    .colorScheme(.dark)
+                    
+                    VStack {
+                        Text("🍏")
+                        Rectangle()
+                            .frame(width: 24, height: 4)
+                            .cornerRadius(2)
+                        Text("🍎")
+                    }
+                    .font(.system(size: 24, weight: .bold))
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 8)
+                    .containerShape(Rectangle())
+                    .glassSideButton(
+                        vertical: true,
+                        downAction1: {print("🍏 DOWN")},
+                        downContAction1: {print("🍏 DOWN CONTINUE")},
+                        upAction1: {print("🍏 UP")},
+                        downAction2: {print("🍎 DOWN")},
+                        downContAction2: {print("🍎 DOWN CONTINUE")},
+                        upAction2: {print("🍎 UP")}
+                    )
+                    .colorScheme(.light)
                 }
-                .font(.system(size: 24, weight: .bold))
-                .padding(.horizontal, 12)
-                .padding(.vertical, 8)
-                .containerShape(Rectangle())
-                .glassTwoSideButton(
-                    downAction1: {print("🍏 DOWN")},
-                    downContAction1: {print("🍏 DOWN CONTINUE")},
-                    upAction1: {print("🍏 UP")},
-                    downAction2: {print("🍎 DOWN")},
-                    downContAction2: {print("🍎 DOWN CONTINUE")},
-                    upAction2: {print("🍎 UP")}
-                )
-                .colorScheme(.dark)
-                
-                HStack {
-                    Text("🍏")
-                    Rectangle()
-                        .frame(width: 4, height: 24)
-                        .cornerRadius(2)
-                    Text("🍎")
-                }
-                .font(.system(size: 24, weight: .bold))
-                .padding(.horizontal, 12)
-                .padding(.vertical, 8)
-                .containerShape(Rectangle())
-                .glassTwoSideButton(
-                    downAction1: {print("🍏 DOWN")},
-                    downContAction1: {print("🍏 DOWN CONTINUE")},
-                    upAction1: {print("🍏 UP")},
-                    downAction2: {print("🍎 DOWN")},
-                    downContAction2: {print("🍎 DOWN CONTINUE")},
-                    upAction2: {print("🍎 UP")}
-                )
-                .colorScheme(.light)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
